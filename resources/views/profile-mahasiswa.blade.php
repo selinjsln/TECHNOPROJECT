@@ -56,7 +56,7 @@
 <body class="flex items-center justify-center min-h-screen">
     <div class="phone-frame">
         <div
-            class="w-full h-7 z-50 flex justify-between items-center px-6 text-[11px] font-bold text-gray-400 bg-white pt-4 absolute top-0 w-full">
+            class="w-full h-7 z-50 flex justify-between items-center px-6 text-[11px] font-bold text-gray-400 bg-white pt-4 absolute top-0">
             <span class="text-gray-800">09:41</span>
             <div class="flex space-x-1 items-center text-blue-400"><span>📶</span><span class="text-green-500">🔋</span>
             </div>
@@ -86,6 +86,20 @@
         </div>
 
         <div class="flex-1 px-6 pt-6 pb-24 overflow-y-auto hide-scroll">
+
+            <div class="mb-6 bg-gradient-to-r from-[#f0a656] to-[#ed8936] rounded-2xl p-4 shadow-md shadow-orange-200 flex justify-between items-center text-white">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2.5 rounded-xl backdrop-blur-sm">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-orange-50 tracking-wide">TOTAL POIN UNIVBITE</p>
+                        <p class="text-2xl font-extrabold mt-0.5">{{ number_format(Auth::user()->points ?? 0, 0, ',', '.') }} <span class="text-xs font-medium">Pts</span></p>
+                    </div>
+                </div>
+            </div>
 
             <div class="mb-6">
                 <h3 class="text-[10px] font-extrabold text-gray-400 tracking-widest mb-3">ACCOUNT & SECURITY</h3>
@@ -174,7 +188,7 @@
                 class="flex flex-col items-center gap-1 text-gray-400 hover:text-orange-500 transition-colors w-12 relative"><svg
                     class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63-.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
                     </path>
                 </svg><span
                     class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full border border-white">2</span><span
@@ -286,9 +300,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Update foto di dalam modal
                     document.getElementById('modal_photo_preview').src = e.target.result;
-                    // Update juga foto di header utama biar langsung kelihatan efeknya!
                     document.getElementById('main_profile_photo').src = e.target.result;
                 }
                 reader.readAsDataURL(file);
