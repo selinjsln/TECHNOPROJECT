@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\CheckoutController;
 use App\Models\Universitas;
 use App\Models\Tenant;
@@ -27,12 +28,7 @@ Route::post('/logout', function () {
 // ==========================================
 // RUTE MAHASISWA
 // ==========================================
-Route::get('/home-mahasiswa', function () {
-    if (!Auth::check() || Auth::user()->role !== 'mahasiswa') return redirect('/login');
-    $user = Auth::user();
-    $daftar_kantin = App\Models\Tenant::all();
-    return view('home-mahasiswa', compact('user', 'daftar_kantin'));
-})->name('mahasiswa.home');
+Route::get('/home-mahasiswa', [MahasiswaController::class, 'home'])->name('mahasiswa.home');
 
 Route::get('/profile-mahasiswa', function () {
     if (!Auth::check() || Auth::user()->role !== 'mahasiswa') return redirect('/login');
