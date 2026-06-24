@@ -10,6 +10,9 @@
         .phone-frame { width: 100%; max-width: 390px; height: 844px; max-height: 95vh; margin: 2vh auto; background: #f8f9fa; position: relative; overflow: hidden; border-radius: 40px; border: 14px solid #1e293b; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Hilangkan panah naik turun bawaan browser di input number */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 
@@ -34,17 +37,23 @@
                         @endif
                     </div>
                     <div class="flex-1">
-                        <h3 class="font-extrabold text-gray-800 text-[15px]">{{ $menu->nama_menu }}</h3>
-                        <p class="text-[12px] text-gray-500 mb-1">{{ $menu->deskripsi }}</p>
+                        <h3 class="font-extrabold text-gray-800 text-[15px] leading-tight">{{ $menu->nama_menu }}</h3>
+                        <p class="text-[11px] text-gray-500 mb-1 mt-0.5 line-clamp-1">{{ $menu->deskripsi ?? 'Tanpa deskripsi' }}</p>
                         <p class="font-extrabold text-[#ed8936] text-[13px]">Rp {{ number_format($menu->harga, 0, ',', '.') }}</p>
                     </div>
 
-                    <form action="{{ route('mahasiswa.cart.add') }}" method="POST">
+                    <form action="{{ route('mahasiswa.cart.add') }}" method="POST" class="flex flex-col items-end gap-2">
                         @csrf
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="bg-orange-100 text-orange-500 font-extrabold text-[11px] px-3 py-1.5 rounded-lg hover:bg-orange-200 transition-colors">
-                            + Tambah
+                        
+                        <div class="flex items-center gap-2 bg-gray-50 px-2 py-1 rounded-full border border-gray-100">
+                            <button type="button" onclick="decreaseQty({{ $menu->id }})" class="w-6 h-6 bg-white rounded-full text-gray-500 font-extrabold flex items-center justify-center pb-0.5 shadow-sm hover:bg-gray-100">-</button>
+                            <input type="number" name="quantity" id="qty-{{ $menu->id }}" value="1" class="w-4 text-center text-xs font-extrabold text-gray-800 bg-transparent outline-none pointer-events-none" readonly>
+                            <button type="button" onclick="increaseQty({{ $menu->id }})" class="w-6 h-6 bg-[#ed8936] rounded-full text-white font-extrabold flex items-center justify-center pb-0.5 shadow-sm hover:bg-orange-600">+</button>
+                        </div>
+                        
+                        <button type="submit" class="bg-orange-100 text-orange-500 font-extrabold text-[10px] px-3 py-1.5 rounded-lg hover:bg-orange-200 transition-colors w-full text-center">
+                            + Keranjang
                         </button>
                     </form>
                 </div>
@@ -55,10 +64,24 @@
         </div>
 
         <div class="px-6 pb-8">
-            <a href="{{ route('mahasiswa.cart') }}" class="w-full bg-[#1e293b] text-white font-extrabold py-4 rounded-2xl block text-center shadow-lg hover:bg-black transition-colors">
+            <a href="{{ route('mahasiswa.cart') }}" class="w-full bg-[#1e293b] text-white font-extrabold py-4 rounded-2xl block text-center shadow-lg hover:bg-black transition-colors relative">
+                <span class="absolute left-6 top-1/2 transform -translate-y-1/2">🛒</span>
                 Lihat Keranjang
             </a>
         </div>
     </div>
+
+    <script>
+        function increaseQty(id) {
+            let input = document.getElementById('qty-' + id);
+            input.value = parseInt(input.value) + 1;
+        }
+        function decreaseQty(id) {
+            let input = document.getElementById('qty-' + id);
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+    </script>
 </body>
 </html>
